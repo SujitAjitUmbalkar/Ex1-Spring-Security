@@ -15,7 +15,7 @@ public class WebSecurityConfig
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception
     {
         httpSecurity
-                .formLogin(Customizer.withDefaults());
+                .formLogin(Customizer.withDefaults());      // removes login form
 
         return httpSecurity.build();
     }
