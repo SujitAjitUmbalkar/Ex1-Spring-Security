@@ -16,6 +16,7 @@ public class WebSecurityConfig
     {
         httpSecurity
                 .authorizeHttpRequests(auth->auth
+                        .requestMatchers("/posts").permitAll()      // /posts wiill be permitted to all
                         .anyRequest().authenticated()) // any request must be authenticated
                 .formLogin(Customizer.withDefaults());      // removes login form if authenticated
 
