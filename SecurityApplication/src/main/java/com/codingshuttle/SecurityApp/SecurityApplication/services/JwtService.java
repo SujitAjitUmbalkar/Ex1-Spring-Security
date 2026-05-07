@@ -1,6 +1,7 @@
 package com.codingshuttle.SecurityApp.SecurityApplication.services;
 
 import com.codingshuttle.SecurityApp.SecurityApplication.entities.User;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -11,7 +12,8 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Set;
-
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 @Service
 public class JwtService
 {
@@ -34,36 +36,30 @@ public class JwtService
                 .signWith(getSecretKey())
                 .compact();
     }
-}
 
-//**1. `@Service`** → Spring Boot creates object(bean) of `JwtService` class automatically.
+
+    public Long getUserIdFromToken(String token)
+    {
+        Claims claims = Jwts.parser()
+                .verifyWith(getSecretKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
+        return Long.valueOf(claims.getSubject());
+    }
+//    1. Jwts.parser() → Creates JWT parser builder.
 //
-//**2. `@Value("${jwt.secretKey}")`** → Reads secret key value from `application.properties`.
+//            2. .verifyWith(getSecretKey()) → Sets secret key for signature verification.
 //
-//**3. `jwtToken` variable** → Stores secret key string from properties file.
+//            3. .build() → Creates final parser object.
 //
-//**4. `generateToken(User user)` method called** → Starts JWT token creation process.
+//            4. .parseSignedClaims(token) → Verifies and parses signed JWT token.
 //
-//**5. `Jwts.builder()`** → Creates JWT builder object for building token.
+//            5. .getPayload() → Extracts claims(payload) from token.
 //
-//**6. `.setSubject(user.getId().toString())`** → Stores user id inside token as subject.
+//            6. claims.getSubject() → Reads stored userId from token.
 //
-//**7. `.claim("email", user.getEmail())`** → Adds custom email data inside token.
-//
-//**8. `.claim("roles", Set.of("ADMIN","USER"))`** → Adds user roles inside token payload.
-//
-//**9. `.setIssuedAt(new Date())`** → Stores current login time in token.
-//
-//**10. `.setExpiration(...)`** → Sets token expiry time to 1 hour.
-//
-//**11. `getSecretKey()` method called** → Generates secret signing key for JWT.
-//
-//**12. `jwtToken.getBytes(StandardCharsets.UTF_8)`** → Converts secret string into byte array.
-//
-//**13. `Keys.hmacShaKeyFor(...)`** → Creates `SecretKey` object using HMAC algorithm.
-//
-//**14. `.signWith(getSecretKey())`** → Digitally signs token using secret key.
-//
-//**15. `.compact()`** → Converts JWT object into final encoded JWT string.
-//
-//**16. Final JWT token returned** → Token is sent back to client/user.git
+//7. Long.valueOf(...) → Converts String userId into Long type.
+
+}
