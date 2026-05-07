@@ -25,6 +25,7 @@ public class WebSecurityConfig
                         .requestMatchers("/posts").permitAll()      // /posts wiill be permitted to all
                         .requestMatchers("/posts/**").hasAnyRole("ADMIN")
                         .anyRequest().authenticated()) // any request must be authenticated
+                .csrf(csrfConfig->csrfConfig.disable())
                 .formLogin(Customizer.withDefaults());      // removes login form if authenticated
 
         return httpSecurity.build();
