@@ -29,6 +29,7 @@ public class WebSecurityConfig
                 .csrf(csrfConfig->csrfConfig.disable())
                 .sessionManagement(sessionConfig->sessionConfig
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
 //              .formLogin(Customizer.withDefaults()); // enables default login form for authentication
 
         return httpSecurity.build();
