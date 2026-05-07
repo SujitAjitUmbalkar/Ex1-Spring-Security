@@ -23,7 +23,7 @@ public class WebSecurityConfig
     {
         httpSecurity
                 .authorizeHttpRequests(auth->auth
-                        .requestMatchers("/posts").permitAll()      // /posts wiill be permitted to all
+                        .requestMatchers("/posts","/error","/auth","/**").permitAll()
                         .requestMatchers("/posts/**").hasAnyRole("ADMIN")
                         .anyRequest().authenticated()) // any request must be authenticated
                 .csrf(csrfConfig->csrfConfig.disable())
@@ -35,23 +35,23 @@ public class WebSecurityConfig
         return httpSecurity.build();
     }
 
-    @Bean           // way to creating inmemory users for testing purpose
-    UserDetailsService myInMemoryUserDetailsService()
-    {
-        UserDetails normalUser = User
-                .withUsername("sujit")
-                .password(passwordEncoder().encode("Sujit@123"))
-                .roles("USER")
-                .build();
-
-        UserDetails adminUser = User
-                .withUsername("Ajit")
-                .password(passwordEncoder().encode("Ajit@123"))
-                .roles("ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(normalUser,adminUser);        // store in inmemoryuserdetailsservice
-    }
+//    @Bean           // way to creating inmemory users for testing purpose
+//    UserDetailsService myInMemoryUserDetailsService()
+//    {
+//        UserDetails normalUser = User
+//                .withUsername("sujit")
+//                .password(passwordEncoder().encode("Sujit@123"))
+//                .roles("USER")
+//                .build();
+//
+//        UserDetails adminUser = User
+//                .withUsername("Ajit")
+//                .password(passwordEncoder().encode("Ajit@123"))
+//                .roles("ADMIN")
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(normalUser,adminUser);        // store in inmemoryuserdetailsservice
+//    }
 
     @Bean
     PasswordEncoder passwordEncoder()

@@ -1,10 +1,7 @@
 package com.codingshuttle.SecurityApp.SecurityApplication.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +13,7 @@ import java.util.List;
 @Setter
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 public class User implements UserDetails
 {
     @Id
@@ -25,7 +23,7 @@ public class User implements UserDetails
     @Column(unique = true)
     private String email;
     private String password;
-
+    private String name;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
