@@ -1,5 +1,6 @@
 package com.codingshuttle.SecurityApp.SecurityApplication.controllers;
 
+import com.codingshuttle.SecurityApp.SecurityApplication.dto.LoginDto;
 import com.codingshuttle.SecurityApp.SecurityApplication.dto.SignUpDto;
 import com.codingshuttle.SecurityApp.SecurityApplication.dto.UserResponseDto;
 import com.codingshuttle.SecurityApp.SecurityApplication.services.UserService;
@@ -22,6 +23,13 @@ public class AuthController
     {
         UserResponseDto userResponseDto = userService.signup(signUpDto);
         return ResponseEntity.ok(userResponseDto);
+    }
+
+    @PostMapping("/login")
+    public  ResponseEntity<String> login(@RequestBody LoginDto loginDto)
+    {
+        String token = userService.login(loginDto);
+        return ResponseEntity.ok(token);
     }
 
 }

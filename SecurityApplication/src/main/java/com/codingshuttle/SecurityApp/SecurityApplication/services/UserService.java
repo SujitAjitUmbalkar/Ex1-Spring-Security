@@ -1,5 +1,6 @@
 package com.codingshuttle.SecurityApp.SecurityApplication.services;
 
+import com.codingshuttle.SecurityApp.SecurityApplication.dto.LoginDto;
 import com.codingshuttle.SecurityApp.SecurityApplication.dto.SignUpDto;
 import com.codingshuttle.SecurityApp.SecurityApplication.dto.UserResponseDto;
 import com.codingshuttle.SecurityApp.SecurityApplication.entities.User;
@@ -7,7 +8,10 @@ import com.codingshuttle.SecurityApp.SecurityApplication.exceptions.ResourceNotF
 import com.codingshuttle.SecurityApp.SecurityApplication.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,6 +27,8 @@ public class UserService  implements UserDetailsService
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -44,5 +50,17 @@ public class UserService  implements UserDetailsService
           User savedUser =   userRepository.save(toBeCreatedUser);
             return  modelMapper.map(savedUser, UserResponseDto.class);  // user Entity -> user Dto (which is going to return to user)
         }
+    }
+
+    public String login(LoginDto loginDto)
+    {
+        Authentication authentication = authenticationManager
+                .authenticate(
+                        new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword())
+                );
+
+        User user = (User) authentication.getPrincipal();
+
+        return jwtService.generateToken(user);
     }
 }

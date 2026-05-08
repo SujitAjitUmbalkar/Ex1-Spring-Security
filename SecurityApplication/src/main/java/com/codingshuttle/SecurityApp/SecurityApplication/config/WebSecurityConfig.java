@@ -2,7 +2,9 @@ package com.codingshuttle.SecurityApp.SecurityApplication.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -33,6 +35,12 @@ public class WebSecurityConfig
 //              .formLogin(Customizer.withDefaults()); // enables default login form for authentication
 
         return httpSecurity.build();
+    }
+
+    @Bean
+    AuthenticationManager  authenticationManagerBean(AuthenticationConfiguration config) throws Exception
+    {
+        return config.getAuthenticationManager();
     }
 
 //    @Bean           // way to creating inmemory users for testing purpose
