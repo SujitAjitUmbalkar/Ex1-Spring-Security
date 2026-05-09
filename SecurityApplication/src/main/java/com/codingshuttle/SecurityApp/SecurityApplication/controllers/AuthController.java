@@ -3,6 +3,7 @@ package com.codingshuttle.SecurityApp.SecurityApplication.controllers;
 import com.codingshuttle.SecurityApp.SecurityApplication.dto.LoginDto;
 import com.codingshuttle.SecurityApp.SecurityApplication.dto.SignUpDto;
 import com.codingshuttle.SecurityApp.SecurityApplication.dto.UserResponseDto;
+import com.codingshuttle.SecurityApp.SecurityApplication.services.AuthService;
 import com.codingshuttle.SecurityApp.SecurityApplication.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController
 {
     private final UserService userService;
+    private final AuthService authService;
 
     @PostMapping("/signup")
     public ResponseEntity<UserResponseDto> signup(@RequestBody SignUpDto signUpDto)
@@ -26,10 +28,12 @@ public class AuthController
     }
 
     @PostMapping("/login")
-    public  ResponseEntity<String> login(@RequestBody LoginDto loginDto)
-    {
-        String token = userService.login(loginDto);
-        return ResponseEntity.ok(token);
+    public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
+        try {
+            String token = authService.login(loginDto);
+            return ResponseEntity.ok(token);
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body("Error: " + e.getMessage());
+        }
     }
-
 }

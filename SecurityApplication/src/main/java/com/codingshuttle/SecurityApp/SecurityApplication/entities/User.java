@@ -21,9 +21,9 @@ public class User implements UserDetails
     private Long id;
 
     @Column(unique = true)
+    private String name;
     private String email;
     private String password;
-    private String name;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

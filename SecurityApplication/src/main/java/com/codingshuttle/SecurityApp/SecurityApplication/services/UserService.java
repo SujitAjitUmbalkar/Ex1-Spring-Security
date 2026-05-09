@@ -27,8 +27,6 @@ public class UserService  implements UserDetailsService
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
-    private final JwtService jwtService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -47,20 +45,8 @@ public class UserService  implements UserDetailsService
         {
             User toBeCreatedUser =  modelMapper.map(signUpDto, User.class);     // user dto -> user Entity
             toBeCreatedUser.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
-          User savedUser =   userRepository.save(toBeCreatedUser);
+            User savedUser =   userRepository.save(toBeCreatedUser);
             return  modelMapper.map(savedUser, UserResponseDto.class);  // user Entity -> user Dto (which is going to return to user)
         }
-    }
-
-    public String login(LoginDto loginDto)
-    {
-        Authentication authentication = authenticationManager
-                .authenticate(
-                        new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword())
-                );
-
-        User user = (User) authentication.getPrincipal();
-
-        return jwtService.generateToken(user);
     }
 }
