@@ -31,12 +31,12 @@ public class User implements UserDetails
     }
 
     @Override
-    public @Nullable String getPassword() {
-        return "";
+    public  String getPassword() {
+        return this.password;
     }
 
     @Override
     public String getUsername() {
-        return "";
+        return  this.name;
     }
 }

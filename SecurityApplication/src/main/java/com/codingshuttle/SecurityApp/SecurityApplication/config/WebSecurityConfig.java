@@ -18,8 +18,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class WebSecurityConfig
 {
-    private final UserDetailsService userDetailsService; // Inject the interface
-    private final PasswordEncoder passwordEncoder;     // Now coming from AppConfig
+//    private final UserDetailsService userDetailsService; // Inject the interface
+//    private final PasswordEncoder passwordEncoder;     // Now coming from AppConfig
 
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception
